@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172554">
+  <title>استبيان الحوكمة والتشغيل للمجموعة والمطاعم</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #64748b;
+      --navy: #172554;
+      --blue: #2563eb;
+      --teal: #0f766e;
+      --mint: #dff7ef;
+      --amber: #f59e0b;
+      --line: #e2e8f0;
+      --surface: #ffffff;
+      --wash: #f5f7fb;
+      --danger: #b91c1c;
+      --shadow: 0 18px 60px rgba(23, 37, 84, .11);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(37, 99, 235, .10), transparent 28rem),
+        radial-gradient(circle at 90% 8%, rgba(15, 118, 110, .11), transparent 25rem),
+        var(--wash);
+      font-family: -apple-system, BlinkMacSystemFont, "Geeza Pro", "Noto Sans Arabic", Tahoma, sans-serif;
+      line-height: 1.75;
+    }
+    .shell { width: min(1020px, calc(100% - 32px)); margin: 0 auto; padding: 34px 0 70px; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      padding: 42px 42px 36px;
+      border-radius: 30px;
+      background:
+        linear-gradient(135deg, rgba(23,37,84,.98), rgba(30,64,175,.96) 58%, rgba(15,118,110,.95));
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      left: -90px;
+      bottom: -170px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 50%;
+      box-shadow: 0 0 0 28px rgba(255,255,255,.05), 0 0 0 58px rgba(255,255,255,.035);
+    }
+    .eyebrow { position: relative; z-index: 1; margin: 0 0 10px; color: #a7f3d0; font-size: .82rem; font-weight: 800; letter-spacing: .04em; }
+    h1 { position: relative; z-index: 1; max-width: 760px; margin: 0; font-size: clamp(1.75rem, 4vw, 3.1rem); line-height: 1.25; letter-spacing: -.03em; }
+    .hero p { position: relative; z-index: 1; max-width: 760px; margin: 18px 0 0; color: #dbeafe; font-size: 1.03rem; }
+    .chips { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
+    .chip { padding: 7px 13px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: rgba(255,255,255,.11); color: #f8fafc; font-size: .84rem; }
+    .notice {
+      display: flex; gap: 13px; align-items: flex-start;
+      margin: 20px 0 16px; padding: 16px 18px;
+      border: 1px solid #bae6fd; border-radius: 16px;
+      background: #f0f9ff; color: #164e63;
+    }
+    .notice strong { color: #075985; }
+    .progress-card {
+      position: sticky; top: 12px; z-index: 5;
+      margin: 16px 0 20px; padding: 14px 17px;
+      border: 1px solid rgba(226,232,240,.9); border-radius: 16px;
+      background: rgba(255,255,255,.91); backdrop-filter: blur(14px); box-shadow: 0 8px 30px rgba(15,23,42,.07);
+    }
+    .progress-line { display: flex; align-items: center; justify-content: space-between; gap: 15px; color: var(--muted); font-size: .88rem; }
+    .progress-line strong { color: var(--navy); }
+    .track { height: 8px; margin-top: 9px; overflow: hidden; border-radius: 99px; background: #e8eef7; }
+    .bar { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--teal), var(--blue)); transition: width .25s ease; }
+    section.block {
+      margin: 22px 0; padding: 26px;
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--surface); box-shadow: 0 10px 35px rgba(15,23,42,.045);
+    }
+    .section-head { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 21px; padding-bottom: 17px; border-bottom: 1px solid #edf2f7; }
+    .section-number { display: grid; flex: 0 0 44px; width: 44px; height: 44px; place-items: center; border-radius: 14px; background: var(--mint); color: var(--teal); font-weight: 900; }
+    h2 { margin: 0; color: var(--navy); font-size: 1.35rem; line-height: 1.4; }
+    .section-description { margin: 3px 0 0; color: var(--muted); font-size: .91rem; }
+    .question { padding: 18px 0; border-bottom: 1px solid #eef2f7; }
+    .question:last-child { padding-bottom: 2px; border-bottom: 0; }
+    .question.missing { margin-inline: -10px; padding-inline: 10px; border-radius: 12px; background: #fff7ed; outline: 2px solid #fed7aa; }
+    .question-title { display: block; margin-bottom: 11px; font-weight: 800; line-height: 1.6; }
+    .required { margin-inline-start: 5px; color: var(--danger); }
+    .helper { margin: -5px 0 10px; color: var(--muted); font-size: .83rem; }
+    .options { display: grid; gap: 9px; }
+    .option {
+      display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+      min-height: 46px; padding: 10px 13px;
+      border: 1px solid #e2e8f0; border-radius: 13px;
+      background: #fbfdff; transition: border-color .16s ease, background .16s ease, transform .16s ease;
+    }
+    .option:hover { border-color: #93c5fd; background: #f8fbff; transform: translateY(-1px); }
+    .option:has(input:checked) { border-color: #60a5fa; background: #eff6ff; box-shadow: inset 0 0 0 1px #bfdbfe; }
+    .option input { flex: 0 0 auto; width: 18px; height: 18px; margin-top: 3px; accent-color: var(--blue); }
+    .option span { flex: 1; font-size: .93rem; }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 24px; }
+    button {
+      border: 0; border-radius: 13px; padding: 13px 20px; cursor: pointer;
+      font: inherit; font-weight: 800; transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+    }
+    button:hover { transform: translateY(-1px); }
+    .primary { color: #fff; background: linear-gradient(135deg, var(--navy), var(--blue)); box-shadow: 0 9px 22px rgba(37,99,235,.22); }
+    .secondary { color: var(--navy); background: #eaf0fb; }
+    button:disabled { opacity: .65; cursor: wait; transform: none; }
+    .action-note { color: var(--muted); font-size: .83rem; }
+    .error { display: none; margin-top: 15px; padding: 13px 15px; border: 1px solid #fecaca; border-radius: 13px; background: #fef2f2; color: #991b1b; }
+    .success { display: none; margin-top: 22px; padding: 30px; border: 1px solid #a7f3d0; border-radius: 22px; background: linear-gradient(135deg, #ecfdf5, #f0fdfa); text-align: center; }
+    .success-icon { display: grid; width: 58px; height: 58px; margin: 0 auto 12px; place-items: center; border-radius: 50%; background: #10b981; color: #fff; font-size: 1.8rem; }
+    .success h2 { color: #065f46; }
+    .success p { margin: 8px auto 0; max-width: 600px; color: #166534; }
+    .success-code { display: inline-block; margin-top: 15px; padding: 7px 12px; border-radius: 8px; background: rgba(16,185,129,.12); color: #065f46; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; direction: ltr; }
+    footer { margin-top: 28px; color: var(--muted); text-align: center; font-size: .82rem; }
+    @media (max-width: 650px) {
+      .shell { width: min(100% - 18px, 1020px); padding-top: 10px; }
+      .hero { padding: 30px 23px 27px; border-radius: 22px; }
+      section.block { padding: 19px 16px; border-radius: 18px; }
+      .progress-card { top: 5px; }
+      .section-head { gap: 11px; }
+      .section-number { flex-basis: 38px; width: 38px; height: 38px; border-radius: 11px; }
+      h2 { font-size: 1.13rem; }
+      .option { padding: 9px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">استبيان جمع المعلومات الأولية</p>
+      <h1>تصميم نظام الحوكمة والتشغيل للمجموعة والمطاعم في الصين</h1>
+      <p>نحتاج إلى صورة عملية عن الملكية، المطاعم، الإدارة، المال، التشغيل، المخاطر، والأنظمة حتى نُعدّ حزمة واحدة قابلة للتنفيذ، بدل بناء توصيات عامة مبنية على التخمين.</p>
+      <div class="chips" aria-label="معلومات عن الاستبيان">
+        <span class="chip">اختيارات فقط</span>
+        <span class="chip">يعمل دون إنترنت</span>
+        <span class="chip">مدة تقريبية: 10–15 دقيقة</span>
+        <span class="chip">لا توجد إجابات خاطئة</span>
+        <span class="chip">يمكن اختيار «لا أعلم»</span>
+      </div>
+    </header>
+
+    <div class="progress-card" aria-live="polite">
+      <div class="progress-line"><span>نسبة اكتمال الاستبيان</span><strong id="progressText">0%</strong></div>
+      <div class="track"><div class="bar" id="progressBar"></div></div>
+    </div>
+
+    <form id="questionnaire" novalidate></form>
+
+    <div class="actions" id="actions">
+      <button class="primary" id="submitButton" type="submit" form="questionnaire">إكمال ومشاركة الإجابات</button>
+      <button class="secondary" id="downloadButton" type="button">حفظ/مشاركة الإجابات</button>
+      <span class="action-note">يتم الحفظ تلقائيًا على هذا الجهاز أثناء التعبئة.</span>
+    </div>
+    <div class="error" id="errorBox" role="alert"></div>
+
+    <section class="success" id="successBox" aria-live="polite">
+      <div class="success-icon" aria-hidden="true">✓</div>
+      <h2>تم تجهيز الإجابات</h2>
+      <p id="successMessage">تم تجهيز ملف الإجابات. أرسله إلى صاحب الاستبيان عبر واتساب أو البريد الإلكتروني، ثم يمكنك إغلاق الصفحة.</p>
+      <div class="success-code" id="responseCode"></div>
+    </section>
+
+    <footer>استبيان الحوكمة والتشغيل للمجموعة والمطاعم في الصين</footer>
+  </main>
+
+  <script>
+    const sections = [
+      {
+        title: "نطاق المجموعة والملكية",
+        description: "اختر الإجابة الأقرب إلى الوضع الحالي، حتى لو كانت المعلومات تقريبية.",
+        questions: [
+          { id: "g0", type: "single", title: "ما صفتك بالنسبة إلى المجموعة والمطاعم؟", options: ["المالك أو أحد الملاك", "شريك أو مستثمر", "مدير المجموعة", "مدير أحد المطاعم", "المحاسبة أو المالية", "المشتريات أو التشغيل", "مستشار أو طرف خارجي", "غير متأكد"] },
+          { id: "g1", type: "multi", title: "ما الأنشطة الموجودة حاليًا ضمن المجموعة؟", options: ["مطاعم في الصين", "مقاولات في السعودية", "مقاولات في اليمن", "تطوير برمجيات", "مصنع فرامل قيد الإنشاء", "عقارات أو أصول استثمارية", "غير متأكد"] },
+          { id: "g2", type: "single", title: "ما الشكل الأقرب لملكية المجموعة؟", options: ["ملكية عائلية أو مالك واحد", "شركاء معروفون بنسب محددة", "شركات مملوكة لأشخاص مختلفين", "يوجد مستثمرون خارجيون", "غير متأكد"] },
+          { id: "g3", type: "single", title: "هل توجد شركة قابضة رسمية تملك أو تدير الشركات؟", options: ["نعم، توجد شركة قابضة قائمة", "لا، لا توجد شركة قابضة", "توجد نية لإنشائها", "غير متأكد"] },
+          { id: "g4", type: "single", title: "كيف تُدار الشركات اليوم؟", options: ["المالك يتابع معظم التفاصيل اليومية", "كل شركة تعمل بشكل مستقل", "توجد إدارة مركزية جزئية", "توجد إدارة مركزية رسمية", "الوضع غير واضح"] },
+          { id: "g5", type: "single", title: "ما العلاقة بين مطعمي الصين؟", options: ["نفس المالك ونفس الشركة القانونية", "نفس المالك لكن شركتان قانونيتان منفصلتان", "شراكة أو ملاك مختلفون", "العلاقة تشغيلية فقط", "غير متأكد"] },
+          { id: "g6", type: "single", title: "هل يستخدم المطعمان العلامة التجارية نفسها؟", options: ["نعم، العلامة نفسها", "لا، علامتان مختلفتان", "جزئيًا أو توجد علامة رئيسية مع اختلافات", "غير متأكد"] },
+          { id: "g7", type: "single", title: "ما العلاقة الجغرافية بين المطعمين؟", options: ["في المدينة نفسها", "في مدينتين داخل المقاطعة نفسها", "في مقاطعتين مختلفتين", "أحدهما يعمل والآخر في موقع مختلف أو غير محدد", "غير متأكد"] },
+          { id: "g8", type: "single", title: "ما خطة التوسع المتوقعة خلال السنوات الثلاث القادمة؟", options: ["لا يوجد توسع مخطط", "إضافة موقع أو موقعين", "إضافة ثلاثة إلى خمسة مواقع", "أكثر من خمسة مواقع", "لم يُحسم القرار"] }
+        ]
+      },
+      {
+        title: "ملف المطاعم",
+        description: "تساعد هذه الإجابات على تحديد حجم الإدارة والوظائف التي تستحق التفرغ.",
+        questions: [
+          { id: "r1", type: "single", title: "ما حالة المطعمين حاليًا؟", options: ["كلاهما يعملان بصورة طبيعية", "أحدهما يعمل والآخر متوقف مؤقتًا", "أحدهما قيد التجهيز أو الافتتاح", "كلاهما متوقفان مؤقتًا", "غير متأكد"] },
+          { id: "r2", type: "single", title: "ما نوع مفهوم المطاعم الأقرب؟", options: ["مطعم خدمة كاملة", "مطعم سريع أو خدمة سريعة", "مطعم غير رسمي سريع", "مقهى أو حلويات", "مفهوم متخصص أو مطبخ إقليمي", "مفهوم مختلط أو غير متأكد"] },
+          { id: "r3", type: "single", title: "كم عدد المقاعد التقريبي في كل مطعم؟", options: ["أقل من 30 مقعدًا", "من 30 إلى 80", "من 81 إلى 150", "أكثر من 150", "غير متأكد"] },
+          { id: "r4", type: "single", title: "كم ساعة يفتح كل مطعم يوميًا تقريبًا؟", options: ["أقل من 8 ساعات", "من 8 إلى 12 ساعة", "من 12 إلى 16 ساعة", "أكثر من 16 ساعة أو طوال اليوم", "تختلف كثيرًا أو غير متأكد"] },
+          { id: "r6", type: "single", title: "ما الوضع الربحي الحالي؟", options: ["المطعمان مربحان", "قريبان من التعادل", "المطعمان يحققان خسارة", "أحدهما مربح والآخر خاسر", "غير متأكد"] },
+          { id: "r7", type: "single", title: "ما اتجاه المبيعات خلال آخر 12 شهرًا؟", options: ["نمو واضح", "مستقرة تقريبًا", "انخفاض واضح", "متذبذبة", "لا توجد بيانات كافية"] },
+          { id: "r8", type: "multi", title: "ما أكبر الضغوط الحالية على المطاعم؟", options: ["ضعف المبيعات أو المنافسة", "ارتفاع تكلفة الطعام", "ارتفاع تكلفة العمالة", "الإيجار والمرافق", "عمولات التوصيل", "نقص السيولة أو النقد", "ضعف الإدارة أو الانضباط", "التراخيص أو الالتزام", "لا أعلم"] }
+        ]
+      },
+      {
+        title: "المبيعات والمالية",
+        description: "لا نحتاج أرقامًا دقيقة الآن؛ نحتاج مستوى الرؤية المالية وطريقة تسجيلها.",
+        questions: [
+          { id: "f1", type: "single", title: "ما مستوى توفر قائمة الدخل لكل مطعم؟", options: ["قائمة شهرية كاملة لآخر 12 شهرًا", "قوائم جزئية أو غير منتظمة", "تتوفر بيانات البنك أو نقطة البيع فقط", "لا توجد قائمة دخل", "غير متأكد"] },
+          { id: "f2", type: "single", title: "كيف تُسجل الحسابات حاليًا؟", options: ["برنامج محاسبي", "جداول إلكترونية", "محاسب خارجي", "سجلات يدوية أو لدى المالك", "لا يوجد نظام واضح", "غير متأكد"] },
+          { id: "f3", type: "single", title: "ما مستوى توفر بيانات المبيعات؟", options: ["تقرير يومي من نظام نقطة البيع", "تقرير أسبوعي أو يدوي", "بيانات شهرية فقط", "البيانات غير موثوقة", "غير متأكد"] },
+          { id: "f4", type: "multi", title: "ما قنوات الدفع والمبيعات المستخدمة؟", options: ["نقدًا", "بطاقات بنكية", "ويتشات باي أو ألي باي", "منصات التوصيل", "تحويلات بنكية", "قسائم أو طرق أخرى", "غير متأكد"] },
+          { id: "f5", type: "single", title: "كم مرة تتم مطابقة النقد والمبيعات؟", options: ["يوميًا", "أحيانًا", "شهريًا فقط", "لا تتم المطابقة", "غير متأكد"] },
+          { id: "f6", type: "single", title: "كم مرة تتم مطابقة البنك ومنصات التوصيل؟", options: ["أسبوعيًا أو أكثر", "شهريًا", "بشكل غير منتظم", "لا تتم المطابقة", "غير متأكد"] },
+          { id: "f7", type: "single", title: "هل توجد ميزانية وتوقعات مالية؟", options: ["ميزانية سنوية معتمدة", "ميزانية شهرية بسيطة", "توقعات تقريبية فقط", "لا توجد ميزانية", "غير متأكد"] },
+          { id: "f8", type: "single", title: "كيف يتم التعامل مع المصروفات الشخصية أو سحوبات المالك؟", options: ["منفصلة تمامًا عن حسابات المطاعم", "توجد حالات عرضية", "تختلط بصورة متكررة", "أفضل عدم الإجابة", "غير متأكد"] },
+          { id: "f9", type: "single", title: "هل توجد ديون أو ضمانات مرتبطة بالمطاعم؟", options: ["لا توجد", "يوجد دين على الشركة", "يوجد ضمان شخصي أو عائلي", "يوجد دين وضمان شخصي", "غير متأكد"] }
+        ]
+      },
+      {
+        title: "الإدارة والموظفون",
+        description: "الغرض هو تصميم هيكل واقعي لا يضيف وظائف إدارية غير ضرورية.",
+        questions: [
+          { id: "p1", type: "single", title: "كم عدد الموظفين التقريبي في المطعم الواحد؟", options: ["أقل من 10", "من 10 إلى 20", "من 21 إلى 40", "من 41 إلى 80", "أكثر من 80", "غير متأكد"] },
+          { id: "p2", type: "single", title: "ما الهيكل الإداري الموجود في كل مطعم؟", options: ["مدير عام واضح لكل مطعم", "مشرفو ورديات فقط", "المالك أو أحد أفراد العائلة يدير المطعم", "إدارة غير رسمية", "غير متأكد"] },
+          { id: "p3", type: "multi", title: "ما الوظائف المشتركة بين المطعمين حاليًا؟", options: ["المالية والمحاسبة", "المشتريات", "الموارد البشرية", "التسويق", "المطبخ أو تطوير القائمة", "لا توجد وظائف مشتركة", "غير متأكد"] },
+          { id: "p4", type: "single", title: "ما مستوى صلاحية مدير المطعم؟", options: ["يدير التشغيل ضمن ميزانية واضحة", "يحتاج موافقة المالك لمعظم المصروفات والتعيينات", "صلاحياته تشغيلية فقط", "لا توجد صلاحيات محددة", "غير متأكد"] },
+          { id: "p5", type: "single", title: "من يُعد بيانات الرواتب عادة؟", options: ["الموارد البشرية", "المحاسب أو المحاسب الخارجي", "مدير المطعم", "المالك", "جهة خارجية متخصصة", "غير متأكد"] },
+          { id: "p6", type: "single", title: "كيف يتم تسجيل الحضور والانصراف؟", options: ["بصمة أو تطبيق حضور", "من خلال نظام نقطة البيع", "سجل ورقي", "رسائل أو جداول غير رسمية", "لا يوجد نظام", "غير متأكد"] },
+          { id: "p7", type: "single", title: "ما مستوى دوران الموظفين؟", options: ["منخفض", "متوسط", "مرتفع", "يختلف حسب المطعم", "غير متأكد"] },
+          { id: "p8", type: "single", title: "كيف يتم تدريب الموظفين؟", options: ["برنامج تدريب رسمي", "تدريب عند الانضمام فقط", "تدريب غير رسمي أثناء العمل", "لا يوجد تدريب منظم", "غير متأكد"] },
+          { id: "p9", type: "single", title: "هل توجد حوافز أو مكافآت؟", options: ["راتب فقط", "عمولة على المبيعات", "مكافأة على الربح", "مكافأة مرتبطة بمؤشرات الأداء", "نظام مختلف حسب الدور", "غير متأكد"] }
+        ]
+      },
+      {
+        title: "المشتريات والمخزون والتشغيل",
+        description: "هذه الإجابات تحدد أين نحتاج إلى الفصل بين الطلب والاستلام والدفع والتسجيل.",
+        questions: [
+          { id: "o1", type: "single", title: "ما نظام نقطة البيع المستخدم؟", options: ["نظام متكامل مع المحاسبة أو المخزون", "نظام نقطة بيع مستقل", "تسجيل يدوي أو جداول", "أكثر من نظام دون تكامل", "غير متأكد"] },
+          { id: "o2", type: "single", title: "من يستطيع تعديل القائمة والأسعار؟", options: ["إدارة مركزية بصلاحيات محددة", "مدير المطعم ضمن حدود", "المالك فقط", "أي مستخدم لديه وصول للنظام", "غير واضح أو غير متأكد"] },
+          { id: "o3", type: "single", title: "كيف تتم المشتريات؟", options: ["مشتريات مركزية للمطعمين", "كل مطعم يشتري منفردًا", "نظام مختلط", "مشتريات غير رسمية حسب الحاجة", "غير متأكد"] },
+          { id: "o4", type: "single", title: "هل توجد قائمة موردين معتمدين؟", options: ["نعم، وتتم مراجعتها دوريًا", "توجد قائمة غير رسمية", "لا توجد قائمة", "غير متأكد"] },
+          { id: "o5", type: "single", title: "من يوافق على طلبات الشراء؟", options: ["مدير المطعم", "المالك أو الإدارة العليا", "مسؤول المشتريات", "لا توجد موافقة مسبقة", "غير متأكد"] },
+          { id: "o6", type: "single", title: "كيف يتم استلام المواد؟", options: ["أمر شراء ومحضر استلام وفحص", "فحص غير رسمي عند الوصول", "مطابقة الفاتورة فقط", "لا يوجد إجراء واضح", "غير متأكد"] },
+          { id: "o7", type: "single", title: "كم مرة يتم جرد المخزون؟", options: ["الأصناف المهمة يوميًا وبقية الأصناف أسبوعيًا", "أسبوعيًا", "شهريًا", "بشكل غير منتظم", "لا يتم الجرد", "غير متأكد"] },
+          { id: "o8", type: "single", title: "كيف يتم تسجيل الهدر والتلف؟", options: ["سجل يومي مع سبب وتكلفة تقريبية", "تسجيل أحيانًا", "لا يتم التسجيل", "غير متأكد"] },
+          { id: "o9", type: "single", title: "ما مستوى توحيد الوصفات والكميات؟", options: ["جميع الأصناف لها وصفات معتمدة", "الأصناف الرئيسية فقط", "الوصفات تعتمد على خبرة الشيف", "لا توجد وصفات مكتوبة", "غير متأكد"] },
+          { id: "o10", type: "single", title: "من يملك صلاحية الخصومات والاستردادات؟", options: ["صلاحيات محددة ومسجلة", "مدير المطعم فقط", "أمين الصندوق أو المشرف", "المالك فقط", "الصلاحيات غير واضحة", "غير متأكد"] },
+          { id: "o11", type: "single", title: "ما نوع التقارير التشغيلية الموجودة حاليًا؟", options: ["تقرير يومي", "تقرير أسبوعي", "تقرير شهري", "تقارير عند الطلب فقط", "لا توجد تقارير", "غير متأكد"] }
+        ]
+      },
+      {
+        title: "سلامة الغذاء والتوصيل",
+        description: "هذا القسم لتحديد مستوى الجاهزية والالتزامات التي يجب التحقق منها محليًا في الصين.",
+        questions: [
+          { id: "s1", type: "single", title: "ما مستوى مستندات سلامة الغذاء؟", options: ["مكتملة ومراجعة", "موجودة جزئيًا", "إجراءات غير رسمية فقط", "لا توجد مستندات منظمة", "غير متأكد"] },
+          { id: "s2", type: "single", title: "هل يوجد مسؤول محدد عن سلامة الغذاء؟", options: ["نعم، مع تكليف مكتوب", "نعم، لكن دون تكليف مكتوب", "لا يوجد مسؤول محدد", "غير متأكد"] },
+          { id: "s3", type: "single", title: "كيف تتم مراجعة سلامة الغذاء؟", options: ["فحوصات داخلية منتظمة", "تفتيش خارجي فقط", "فحوصات متقطعة", "لا توجد مراجعة منظمة", "غير متأكد"] },
+          { id: "s4", type: "multi", title: "ما المناطق التي تحتاج إلى أكبر قدر من التحسين؟", options: ["استلام المواد وتتبعها", "التبريد والتخزين", "التنظيف والتعقيم", "النظافة الشخصية", "مكافحة الآفات", "الطهي والحفظ", "تغليف وتسليم الطلبات", "لا أعلم"] },
+          { id: "s5", type: "single", title: "هل تستخدم المطاعم منصات التوصيل؟", options: ["لا يوجد توصيل", "منصة واحدة", "منصتان أو أكثر", "منصة مملوكة للمطعم أو طلبات مباشرة", "غير متأكد"] },
+          { id: "s6", type: "single", title: "كيف يتم تغليف طلبات التوصيل؟", options: ["تغليف وإغلاق يمنع الفتح وإعادة الإغلاق", "تغليف مغلق عادي", "يختلف حسب الطلب أو المنصة", "لا توجد ضوابط ثابتة", "غير متأكد"] },
+          { id: "s7", type: "single", title: "كيف تتم مطابقة مبيعات التوصيل وعمولاته؟", options: ["يوميًا أو أسبوعيًا", "شهريًا", "يدويًا وبشكل غير منتظم", "لا تتم المطابقة", "غير متأكد"] },
+          { id: "s8", type: "single", title: "كيف يتم تسجيل شكاوى العملاء والحوادث؟", options: ["سجل رسمي مع سبب وإجراء تصحيحي", "رسائل أو ملاحظات غير رسمية", "يتم التعامل معها شفهيًا فقط", "لا يوجد سجل", "غير متأكد"] },
+          { id: "s9", type: "single", title: "ما حالة التراخيص الأساسية للمطاعم؟", options: ["سارية ومراجعة", "بعضها يحتاج إلى تحديث", "توجد مشكلة أو نقص معروف", "لا أعلم الحالة الحالية", "أفضل عدم الإجابة"] }
+        ]
+      },
+      {
+        title: "الحوكمة والتقارير والأنظمة",
+        description: "الغرض هو بناء نظام تقارير خفيف يرفع الاستثناءات والقرارات المهمة، لا البيروقراطية.",
+        questions: [
+          { id: "h1", type: "single", title: "أين يحدث أكبر اختناق في اتخاذ القرار؟", options: ["كل شيء يعود إلى المالك", "مديرو المطاعم لا يملكون صلاحيات كافية", "المالية أو المحاسب يتأخر", "لا توجد بيانات موثوقة", "الموردون أو التشغيل", "لا يوجد اختناق واضح", "غير متأكد"] },
+          { id: "h2", type: "single", title: "لمن ترفع المطاعم معلوماتها حاليًا؟", options: ["للمالك مباشرة", "لمدير أعمال أو مدير وحدة", "للمحاسب أو المدير المالي", "لا ترفع تقارير منتظمة", "غير متأكد"] },
+          { id: "h3", type: "single", title: "ما تكرار التقارير الذي سيكون مفيدًا؟", options: ["ملخص يومي واستثناءات", "تقرير أسبوعي", "حزمة مالية شهرية", "الاستثناءات فقط عند حدوثها", "كل المستويات السابقة", "غير متأكد"] },
+          { id: "h4", type: "single", title: "ما الوسيلة المفضلة للتقارير؟", options: ["لوحة ويب بسيطة", "جداول إلكترونية", "تصدير من نظام نقطة البيع", "رسائل مختصرة مع ملخص", "لا توجد تفضيلات محددة"] },
+          { id: "h5", type: "multi", title: "ما البيانات التي يمكن توفيرها أو تصديرها؟", options: ["تقارير نقطة البيع", "كشوفات البنك", "بيانات الرواتب والحضور", "بيانات المشتريات والمخزون", "قوائم الموردين", "لا توجد بيانات منظمة", "غير متأكد"] },
+          { id: "h6", type: "single", title: "كيف تتم إدارة صلاحيات الأنظمة؟", options: ["حساب منفصل لكل مستخدم وصلاحيات محددة", "حسابات مشتركة بين الموظفين", "الوصول لدى المالك أو شخص واحد", "الصلاحيات غير واضحة", "غير متأكد"] },
+          { id: "h7", type: "single", title: "هل توجد معاملات مع أطراف ذات علاقة؟", options: ["لا توجد", "توجد معاملات محدودة ومعلنة", "توجد معاملات متكررة", "غير متأكد", "أفضل عدم الإجابة"] },
+          { id: "h8", type: "multi", title: "ما أكبر مخاوف الرقابة حاليًا؟", options: ["النقد والتحصيل", "المشتريات والموردون", "المخزون والهدر", "الرواتب والحضور", "المبيعات والخصومات", "صلاحيات الأنظمة والبيانات", "سلامة الغذاء", "لا توجد مخاوف معروفة", "غير متأكد"] }
+        ]
+      },
+      {
+        title: "الاستعداد للتنفيذ والنتيجة المطلوبة",
+        description: "هذا القسم يحدد شكل الحزمة النهائية وطريقة تطبيقها في الواقع.",
+        questions: [
+          { id: "i1", type: "single", title: "ما مستوى الاستعداد لتطبيق نظام جديد؟", options: ["جاهزون للبدء فورًا", "نحتاج أولًا إلى موافقة المالك", "نحتاج إلى موافقة مديري المطاعم", "نحتاج إلى وقت ودراسة إضافية", "غير متأكد"] },
+          { id: "i2", type: "single", title: "متى يمكن بدء التطبيق العملي؟", options: ["خلال أقل من 30 يومًا", "خلال شهر إلى ثلاثة أشهر", "خلال ثلاثة إلى ستة أشهر", "بعد أكثر من ستة أشهر", "غير متأكد"] },
+          { id: "i4", type: "single", title: "ما مستوى النظام الإداري المطلوب؟", options: ["نظام خفيف جدًا بأقل عدد من الوظائف", "نظام متوازن مع رقابة واضحة", "نظام قوي قابل للتوسع", "غير متأكد"] },
+          { id: "i5", type: "single", title: "كم مرة يستطيع صاحب القرار مراجعة التقارير؟", options: ["يوميًا", "أسبوعيًا", "شهريًا", "من خلال ممثل مفوض", "غير متأكد"] },
+          { id: "i6", type: "single", title: "ما مستوى توفر الوثائق المطلوبة؟", options: ["معظم الوثائق متوفرة", "تتوفر بعض الوثائق", "تتوفر وثائق قليلة", "لا توجد وثائق منظمة", "غير متأكد"] },
+          { id: "i7", type: "multi", title: "ما النتائج الأهم التي تريد تحقيقها؟", options: ["معرفة ربحية كل مطعم", "إيقاف تسرب النقد", "تقليل الهدر وتكلفة الطعام", "تحسين أداء الموظفين", "رفع جودة الخدمة", "الاستعداد للتوسع", "تحسين الالتزام وسلامة الغذاء", "توضيح صلاحيات الإدارة", "غير متأكد"] }
+        ]
+      }
+    ];
+
+    const form = document.getElementById('questionnaire');
+    const storageKey = 'restaurant-governance-questionnaire-v1';
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch (_) { saved = {}; }
+
+    const allQuestions = sections.flatMap(section => section.questions);
+    const totalQuestions = allQuestions.length;
+
+    function makeOption(question, option, index) {
+      const id = `${question.id}-${index}`;
+      const label = document.createElement('label');
+      label.className = 'option';
+      const input = document.createElement('input');
+      input.type = question.type === 'multi' ? 'checkbox' : 'radio';
+      input.name = question.id;
+      input.value = option;
+      input.id = id;
+      input.dataset.questionId = question.id;
+      if (question.type === 'single') input.required = true;
+      const span = document.createElement('span');
+      span.textContent = option;
+      label.htmlFor = id;
+      label.append(input, span);
+      const previous = saved[question.id];
+      if (question.type === 'multi' && Array.isArray(previous) && previous.includes(option)) input.checked = true;
+      if (question.type === 'single' && previous === option) input.checked = true;
+      input.addEventListener('change', () => {
+        saveAnswers();
+        updateProgress();
+        const parent = input.closest('.question');
+        if (parent) parent.classList.remove('missing');
+      });
+      return label;
+    }
+
+    sections.forEach((section, sectionIndex) => {
+      const block = document.createElement('section');
+      block.className = 'block';
+      block.id = `section-${sectionIndex + 1}`;
+      const head = document.createElement('div');
+      head.className = 'section-head';
+      const number = document.createElement('div');
+      number.className = 'section-number';
+      number.textContent = sectionIndex + 1;
+      const headText = document.createElement('div');
+      const h2 = document.createElement('h2');
+      h2.textContent = section.title;
+      const description = document.createElement('p');
+      description.className = 'section-description';
+      description.textContent = section.description;
+      headText.append(h2, description);
+      head.append(number, headText);
+      block.append(head);
+
+      section.questions.forEach(question => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'question';
+        wrapper.dataset.questionId = question.id;
+        const title = document.createElement('div');
+        title.className = 'question-title';
+        title.textContent = question.title;
+        const required = document.createElement('span');
+        required.className = 'required';
+        required.textContent = '*';
+        required.title = 'إجابة مطلوبة';
+        title.append(required);
+        const helper = document.createElement('div');
+        helper.className = 'helper';
+        helper.textContent = question.type === 'multi' ? 'يمكن اختيار أكثر من إجابة.' : 'اختر إجابة واحدة.';
+        const options = document.createElement('div');
+        options.className = 'options';
+        question.options.forEach((option, index) => options.append(makeOption(question, option, index)));
+        wrapper.append(title, helper, options);
+        block.append(wrapper);
+      });
+      form.append(block);
+    });
+
+    function readAnswers() {
+      const answers = {};
+      allQuestions.forEach(question => {
+        const inputs = Array.from(form.querySelectorAll(`input[name="${question.id}"]`));
+        if (question.type === 'multi') answers[question.id] = inputs.filter(input => input.checked).map(input => input.value);
+        else answers[question.id] = (inputs.find(input => input.checked) || {}).value || '';
+      });
+      return answers;
+    }
+
+    function saveAnswers() {
+      const answers = readAnswers();
+      try { localStorage.setItem(storageKey, JSON.stringify(answers)); } catch (_) {}
+      saved = answers;
+    }
+
+    function answeredCount(answers) {
+      return allQuestions.filter(question => {
+        const value = answers[question.id];
+        return Array.isArray(value) ? value.length > 0 : Boolean(value);
+      }).length;
+    }
+
+    function updateProgress() {
+      const count = answeredCount(readAnswers());
+      const percent = Math.round((count / totalQuestions) * 100);
+      document.getElementById('progressText').textContent = `${percent}% (${count} من ${totalQuestions})`;
+      document.getElementById('progressBar').style.width = `${percent}%`;
+    }
+
+    function validate() {
+      const answers = readAnswers();
+      let firstMissing = null;
+      allQuestions.forEach(question => {
+        const value = answers[question.id];
+        const missing = Array.isArray(value) ? value.length === 0 : !value;
+        const wrapper = form.querySelector(`[data-question-id="${question.id}"]`);
+        if (wrapper) {
+          wrapper.classList.toggle('missing', missing);
+          if (missing && !firstMissing) firstMissing = wrapper;
+        }
+      });
+      if (firstMissing) {
+        firstMissing.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return false;
+      }
+      return true;
+    }
+
+    function makeResponseRecord() {
+      const stamp = new Date().toISOString().replace(/[-:TZ.]/g, '').slice(0, 14);
+      const suffix = Math.random().toString(16).slice(2, 8);
+      return { response_id: `محلي-${stamp}-${suffix}`, exported_at: new Date().toISOString(), answers: readAnswers() };
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>\"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;' }[character]));
+    }
+
+    function buildResponseHtml(record) {
+      const sectionsHtml = sections.map(section => {
+        const rows = section.questions.map(question => {
+          const answer = record.answers[question.id];
+          const display = Array.isArray(answer) ? answer.join('، ') : (answer || 'لم تتم الإجابة');
+          return `<article class="row"><h3>${escapeHtml(question.title)}</h3><p>${escapeHtml(display)}</p></article>`;
+        }).join('');
+        return `<section><h2>${escapeHtml(section.title)}</h2>${rows}</section>`;
+      }).join('');
+      const embedded = escapeHtml(JSON.stringify(record, null, 2));
+      return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ملف إجابات استبيان الحوكمة</title><style>body{margin:0;background:#f5f7fb;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Geeza Pro","Noto Sans Arabic",Tahoma,sans-serif;line-height:1.7}main{width:min(850px,calc(100% - 28px));margin:24px auto 60px}header,section{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px;margin-bottom:16px}header{background:linear-gradient(135deg,#172554,#0f766e);color:#fff}h1{margin:0;font-size:1.7rem}h2{margin:0 0 15px;color:#172554;font-size:1.2rem;border-bottom:1px solid #e2e8f0;padding-bottom:10px}.row{padding:10px 0;border-bottom:1px solid #eef2f7}.row:last-child{border-bottom:0}.row h3{font-size:1rem;margin:0 0 4px}.row p{margin:0;color:#0f766e;font-weight:700}.meta{margin-top:10px;color:#dbeafe;font-size:.85rem;direction:ltr;text-align:right}small{color:#64748b}</style></head><body><main><header><h1>إجابات استبيان الحوكمة والتشغيل</h1><div>ملف إجابات قابل للمشاركة والتحليل</div><div class="meta">${escapeHtml(record.response_id)} | ${escapeHtml(record.exported_at)}</div></header>${sectionsHtml}<footer><small>تم إنشاء هذا الملف من الاستبيان العربي المخصص للمجموعة والمطاعم في الصين.</small></footer></main><pre id="بيانات-الإجابات" hidden>${embedded}</pre></body></html>`;
+    }
+
+    async function downloadAnswers() {
+      const record = makeResponseRecord();
+      const fileName = `إجابات-استبيان-الحوكمة-${new Date().toISOString().slice(0, 10)}.html`;
+      const file = new File([buildResponseHtml(record)], fileName, { type: 'text/html;charset=utf-8' });
+      try {
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ title: 'إجابات استبيان الحوكمة', text: 'ملف إجابات الاستبيان', files: [file] });
+          return { id: record.response_id, shared: true, cancelled: false };
+        }
+      } catch (error) {
+        if (error && error.name === 'AbortError') return { id: record.response_id, shared: false, cancelled: true };
+      }
+      const url = URL.createObjectURL(file);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      return { id: record.response_id, shared: false, cancelled: false };
+    }
+
+    function showOfflineSuccess(responseId, shared) {
+      document.getElementById('questionnaire').style.display = 'none';
+      document.getElementById('actions').style.display = 'none';
+      document.getElementById('successBox').style.display = 'block';
+      document.getElementById('successMessage').textContent = shared
+        ? 'تم فتح قائمة المشاركة. أرسل ملف الإجابات إلى صاحب الاستبيان عبر واتساب أو البريد الإلكتروني.'
+        : 'تم إنشاء ملف الإجابات وتنزيله على الجهاز. أرسله إلى صاحب الاستبيان عبر واتساب أو البريد الإلكتروني.';
+      document.getElementById('responseCode').textContent = `رمز الملف: ${responseId}`;
+    }
+
+    document.getElementById('downloadButton').addEventListener('click', async () => {
+      const result = await downloadAnswers();
+      if (!result.cancelled) {
+        const note = document.getElementById('errorBox');
+        note.textContent = result.shared ? 'تم فتح قائمة المشاركة.' : 'تم تنزيل ملف الإجابات.';
+        note.style.display = 'block';
+      }
+    });
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      document.getElementById('errorBox').style.display = 'none';
+      if (!validate()) {
+        document.getElementById('errorBox').textContent = 'يرجى الإجابة عن الأسئلة المظللة قبل الإرسال.';
+        document.getElementById('errorBox').style.display = 'block';
+        return;
+      }
+      saveAnswers();
+      const button = document.getElementById('submitButton');
+      button.disabled = true;
+      button.textContent = 'جارٍ تجهيز ملف الإجابات…';
+
+      if (location.protocol === 'file:') {
+        const result = await downloadAnswers();
+        if (result.cancelled) {
+          button.disabled = false;
+          button.textContent = 'إكمال ومشاركة الإجابات';
+          return;
+        }
+        localStorage.removeItem(storageKey);
+        showOfflineSuccess(result.id, result.shared);
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answers: readAnswers(), submitted_at_client: new Date().toISOString() })
+        });
+        const result = await response.json();
+        if (!response.ok || result.status !== 'saved') throw new Error('submit_failed');
+        document.getElementById('questionnaire').style.display = 'none';
+        document.getElementById('actions').style.display = 'none';
+        document.getElementById('successBox').style.display = 'block';
+        document.getElementById('successMessage').textContent = 'تم حفظ الإجابات على جهاز صاحب الاستبيان. يمكنك إغلاق الصفحة الآن.';
+        document.getElementById('responseCode').textContent = `رمز الاستلام: ${result.response_id}`;
+        localStorage.removeItem(storageKey);
+      } catch (_) {
+        const result = await downloadAnswers();
+        if (!result.cancelled) {
+          localStorage.removeItem(storageKey);
+          showOfflineSuccess(result.id, result.shared);
+          return;
+        }
+        button.disabled = false;
+        button.textContent = 'إكمال ومشاركة الإجابات';
+        const errorBox = document.getElementById('errorBox');
+        errorBox.textContent = 'تعذر الوصول إلى خادم الحفظ. بقيت إجاباتك محفوظة على هذا الجهاز؛ استخدم زر حفظ/مشاركة الإجابات ثم أرسل الملف لصاحب الاستبيان.';
+        errorBox.style.display = 'block';
+      }
+    });
+
+    updateProgress();
+  </script>
+</body>
+</html>
